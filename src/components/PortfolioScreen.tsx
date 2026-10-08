@@ -87,11 +87,11 @@ export default function PortfolioScreen({ portfolio, cosplayers, reputation, lev
                 className={`bg-gray-900 rounded-xl overflow-hidden border hover:border-purple-500/50 transition group ${tierColors[getCosplayerTier(photo.cosplayerId) as keyof typeof tierColors]}`}
               >
                 {/* Thumbnail */}
-                <div className="aspect-[3/4] relative overflow-hidden">
+                <div className="aspect-[3/4] relative overflow-hidden bg-black flex items-center justify-center">
                   <img
                     src={getCosplayerImage(photo.cosplayerId)}
                     alt={photo.cosplayerName}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     style={{ filter: `brightness(${photo.settings.iso >= 800 ? 1 : 0.7}) contrast(1.1)` }}
                   />
                   {/* Score badge */}

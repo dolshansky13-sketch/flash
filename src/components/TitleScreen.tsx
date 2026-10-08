@@ -58,25 +58,25 @@ export default function TitleScreen({ onStart }: Props) {
         <div className="mt-12 grid grid-cols-4 gap-4 text-center max-w-lg mx-auto">
           <div>
             <div className="text-2xl mb-1">📷</div>
-            <div className="text-xs text-gray-500">Real Camera Settings</div>
+            <div className="text-xs text-gray-500">Real Camera</div>
           </div>
           <div>
             <div className="text-2xl mb-1">👗</div>
-            <div className="text-xs text-gray-500">16 Cosplayers</div>
+            <div className="text-xs text-gray-500">22 Cosplayers</div>
           </div>
           <div>
             <div className="text-2xl mb-1">🏆</div>
-            <div className="text-xs text-gray-500">Build Portfolio</div>
+            <div className="text-xs text-gray-500">Portfolio</div>
           </div>
           <div>
             <div className="text-2xl mb-1">💃</div>
-            <div className="text-xs text-gray-500">16 Poses</div>
+            <div className="text-xs text-gray-500">22 Poses</div>
           </div>
         </div>
         <div className="mt-4 grid grid-cols-3 gap-4 text-center max-w-sm mx-auto">
           <div>
             <div className="text-lg mb-1">🗺️</div>
-            <div className="text-xs text-gray-500">5 Locations</div>
+            <div className="text-xs text-gray-500">8 Locations</div>
           </div>
           <div>
             <div className="text-lg mb-1">🎯</div>

@@ -9,7 +9,9 @@ export type ShotType = 'extreme_closeup' | 'closeup' | 'bust' | 'medium' | 'cowb
 export type PoseType = 
   | 'confident' | 'playful' | 'seductive' | 'dramatic' | 'candid' | 'action'
   | 'over_shoulder' | 'sitting' | 'leaning' | 'hands_in_hair' | 'kneeling' | 'back_pose'
-  | 'peace_sign' | 'heart_hands' | 'head_tilt' | 'lip_bite';
+  | 'peace_sign' | 'heart_hands' | 'head_tilt' | 'lip_bite'
+  | 'ahegao' | 'pouty' | 'shy' | 'teasing' | 'curtsy' | 'stretching'
+  | 'looking_away' | 'finger_on_lips' | 'arms_crossed' | 'hand_on_thigh';
 export type CompositionType = 
   | 'rule_of_thirds' | 'centered' | 'leading_lines' | 'frame_within_frame' 
   | 'low_angle' | 'high_angle' | 'dutch_angle' | 'profile' | 'overhead' | 'reflection';
@@ -139,6 +141,16 @@ export const POSE_INFO: Record<PoseType, { label: string; description: string; i
   heart_hands: { label: 'Heart Hands', description: 'Fingers forming heart shape, adorable', icon: '💕' },
   head_tilt: { label: 'Head Tilt', description: 'Curious tilt, innocent look, endearing', icon: '🤔' },
   lip_bite: { label: 'Lip Bite', description: 'Sultry, intense, magazine cover energy', icon: '😏' },
+  ahegao: { label: 'Ahegao', description: 'Overwhelmed expression, tongue out, eyes rolled back', icon: '😵' },
+  pouty: { label: 'Pouty', description: 'Duck face, cute pout, pleading eyes', icon: '😗' },
+  shy: { label: 'Shy', description: 'Looking down, blushing, hands clasped nervously', icon: '😳' },
+  teasing: { label: 'Teasing', description: 'Winking, playful smirk, finger pointing', icon: '😉' },
+  curtsy: { label: 'Curtsy', description: 'Elegant curtsy pose, one leg behind, slight bow', icon: '👸' },
+  stretching: { label: 'Stretching', description: 'Arms raised above head, back arched, yawn pose', icon: '🙆' },
+  looking_away: { label: 'Looking Away', description: 'Profile view, gazing into distance, thoughtful', icon: '👀' },
+  finger_on_lips: { label: 'Finger on Lips', description: 'Shh gesture, mysterious, secretive pose', icon: '🤫' },
+  arms_crossed: { label: 'Arms Crossed', description: 'Defensive but cute, slight lean, confident stance', icon: '💪' },
+  hand_on_thigh: { label: 'Hand on Thigh', description: 'Sitting or standing, hand resting on thigh, casual', icon: '🤚' },
 };
 
 export const COMPOSITION_INFO: Record<CompositionType, { label: string; description: string; icon: string }> = {

@@ -56,11 +56,11 @@ export default function EncounterScreen({ location, cosplayers, onSelect, onBack
               onClick={() => onSelect(cosplayer)}
             >
               {/* Character Image */}
-              <div className="h-64 relative overflow-hidden">
+              <div className="h-64 relative overflow-hidden bg-black flex items-center justify-center">
                 <img
                   src={cosplayer.image}
                   alt={cosplayer.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent" />
                 <div className="absolute bottom-3 left-3 right-3">

@@ -19,27 +19,13 @@ export default function ReviewScreen({ photo, cosplayer, location, onContinue, o
   const scoreColor = photo.score >= 75 ? 'text-green-400' : photo.score >= 50 ? 'text-yellow-400' : 'text-red-400';
   const scoreBg = photo.score >= 75 ? 'from-green-500/20 to-green-500/5' : photo.score >= 50 ? 'from-yellow-500/20 to-yellow-500/5' : 'from-red-500/20 to-red-500/5';
 
-  const getZoomScale = () => {
-    switch (photo.shotType) {
-      case 'extreme_closeup': return 'scale-[2.5] translate-y-16';
-      case 'closeup': return 'scale-[1.8] translate-y-10';
-      case 'bust': return 'scale-[1.5] translate-y-6';
-      case 'medium': return 'scale-125 translate-y-4';
-      case 'cowboy': return 'scale-110 translate-y-2';
-      case 'fullbody': return 'scale-100';
-      case 'wide': return 'scale-90';
-      case 'detail': return 'scale-[2.2] translate-x-4 translate-y-4';
-      default: return 'scale-100';
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-950 text-white">
       {/* Header */}
       <div className="bg-gray-900 border-b border-gray-800 px-4 py-3">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <h1 className="text-lg font-bold">📸 Photo Review</h1>
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center">
             <span className="text-xs text-green-400">+${photo.moneyEarned}</span>
             <span className="text-xs text-purple-400">+{photo.xpEarned} XP</span>
             <button onClick={onPortfolio} className="text-xs text-purple-400 hover:text-purple-300">Portfolio →</button>
@@ -49,17 +35,22 @@ export default function ReviewScreen({ photo, cosplayer, location, onContinue, o
 
       <div className="max-w-4xl mx-auto px-4 py-6">
         {/* Photo Display */}
-        <div className="relative rounded-xl overflow-hidden mb-6 border border-gray-800">
-          <div className="aspect-[3/4] max-h-[380px] relative">
-            <img src={location.image} alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+        <div className="relative rounded-xl overflow-hidden mb-6 border border-gray-800 bg-black">
+          <div className="aspect-[3/4] max-h-[500px] relative flex items-center justify-center">
+            <img 
+              src={location.image} 
+              alt="" 
+              className="absolute inset-0 w-full h-full object-cover opacity-30" 
+            />
             <img
               src={cosplayer.image}
               alt={cosplayer.name}
-              className={`absolute inset-0 w-full h-full object-cover transition-all ${getZoomScale()}`}
+              className="relative max-w-full max-h-full object-contain z-10"
               style={{ filter: `brightness(${photo.settings.iso >= 800 ? 1 : 0.7}) contrast(1.1)` }}
             />
+            
             {/* Score overlay */}
-            <div className={`absolute top-4 right-4 bg-gradient-to-br ${scoreBg} backdrop-blur-md rounded-xl p-4 border border-gray-700/50`}>
+            <div className={`absolute top-4 right-4 bg-gradient-to-br ${scoreBg} backdrop-blur-md rounded-xl p-4 border border-gray-700/50 z-20`}>
               <div className={`text-4xl font-black ${scoreColor}`}>{photo.score}</div>
               <div className="flex gap-0.5 mt-1">
                 {[1,2,3,4,5].map(i => (
@@ -68,8 +59,9 @@ export default function ReviewScreen({ photo, cosplayer, location, onContinue, o
               </div>
               <div className={`text-xs font-bold mt-1 ${scoreColor}`}>{getScoreLabel(photo.score)}</div>
             </div>
+            
             {/* Tier badge */}
-            <div className={`absolute top-4 left-4 px-2 py-1 rounded text-xs font-bold ${
+            <div className={`absolute top-4 left-4 px-2 py-1 rounded text-xs font-bold z-20 ${
               cosplayer.tier === 'legendary' ? 'bg-yellow-500/20 text-yellow-400' :
               cosplayer.tier === 'elite' ? 'bg-purple-500/20 text-purple-400' :
               cosplayer.tier === 'rare' ? 'bg-blue-500/20 text-blue-400' :
