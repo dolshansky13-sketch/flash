@@ -19,14 +19,30 @@ export default function ReviewScreen({ photo, cosplayer, location, onContinue, o
   const scoreColor = photo.score >= 75 ? 'text-green-400' : photo.score >= 50 ? 'text-yellow-400' : 'text-red-400';
   const scoreBg = photo.score >= 75 ? 'from-green-500/20 to-green-500/5' : photo.score >= 50 ? 'from-yellow-500/20 to-yellow-500/5' : 'from-red-500/20 to-red-500/5';
 
+  const getZoomScale = () => {
+    switch (photo.shotType) {
+      case 'extreme_closeup': return 'scale-[2.5] translate-y-16';
+      case 'closeup': return 'scale-[1.8] translate-y-10';
+      case 'bust': return 'scale-[1.5] translate-y-6';
+      case 'medium': return 'scale-125 translate-y-4';
+      case 'cowboy': return 'scale-110 translate-y-2';
+      case 'fullbody': return 'scale-100';
+      case 'wide': return 'scale-90';
+      case 'detail': return 'scale-[2.2] translate-x-4 translate-y-4';
+      default: return 'scale-100';
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-950 text-white">
       {/* Header */}
       <div className="bg-gray-900 border-b border-gray-800 px-4 py-3">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <h1 className="text-lg font-bold">📸 Photo Review</h1>
-          <div className="flex gap-2">
-            <button onClick={onPortfolio} className="text-xs text-purple-400 hover:text-purple-300">View Portfolio</button>
+          <div className="flex gap-3">
+            <span className="text-xs text-green-400">+${photo.moneyEarned}</span>
+            <span className="text-xs text-purple-400">+{photo.xpEarned} XP</span>
+            <button onClick={onPortfolio} className="text-xs text-purple-400 hover:text-purple-300">Portfolio →</button>
           </div>
         </div>
       </div>
@@ -34,17 +50,12 @@ export default function ReviewScreen({ photo, cosplayer, location, onContinue, o
       <div className="max-w-4xl mx-auto px-4 py-6">
         {/* Photo Display */}
         <div className="relative rounded-xl overflow-hidden mb-6 border border-gray-800">
-          <div className="aspect-[3/4] max-h-[400px] relative">
+          <div className="aspect-[3/4] max-h-[380px] relative">
             <img src={location.image} alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />
             <img
               src={cosplayer.image}
               alt={cosplayer.name}
-              className={`absolute inset-0 w-full h-full object-cover ${
-                photo.shotType === 'closeup' ? 'scale-150 translate-y-8' :
-                photo.shotType === 'medium' ? 'scale-125 translate-y-4' :
-                photo.shotType === 'detail' ? 'scale-[2] translate-x-4 translate-y-4' :
-                'scale-100'
-              }`}
+              className={`absolute inset-0 w-full h-full object-cover transition-all ${getZoomScale()}`}
               style={{ filter: `brightness(${photo.settings.iso >= 800 ? 1 : 0.7}) contrast(1.1)` }}
             />
             {/* Score overlay */}
@@ -57,6 +68,15 @@ export default function ReviewScreen({ photo, cosplayer, location, onContinue, o
               </div>
               <div className={`text-xs font-bold mt-1 ${scoreColor}`}>{getScoreLabel(photo.score)}</div>
             </div>
+            {/* Tier badge */}
+            <div className={`absolute top-4 left-4 px-2 py-1 rounded text-xs font-bold ${
+              cosplayer.tier === 'legendary' ? 'bg-yellow-500/20 text-yellow-400' :
+              cosplayer.tier === 'elite' ? 'bg-purple-500/20 text-purple-400' :
+              cosplayer.tier === 'rare' ? 'bg-blue-500/20 text-blue-400' :
+              'bg-gray-500/20 text-gray-400'
+            }`}>
+              {cosplayer.tier.toUpperCase()}
+            </div>
           </div>
         </div>
 
@@ -65,7 +85,7 @@ export default function ReviewScreen({ photo, cosplayer, location, onContinue, o
           {/* Technical Details */}
           <div className="bg-gray-900 rounded-xl p-4 border border-gray-800">
             <h3 className="text-sm font-bold text-gray-400 mb-3 uppercase tracking-wider">Camera Settings</h3>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2">
               <div className="bg-gray-800/50 rounded-lg p-2">
                 <div className="text-xs text-gray-500">Aperture</div>
                 <div className="text-sm font-mono text-white">f/{photo.settings.aperture}</div>
@@ -83,7 +103,7 @@ export default function ReviewScreen({ photo, cosplayer, location, onContinue, o
                 <div className="text-sm font-mono text-white">{photo.settings.focalLength}mm</div>
               </div>
             </div>
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-wrap gap-1.5">
               <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-1 rounded">
                 {SHOT_TYPE_INFO[photo.shotType].icon} {SHOT_TYPE_INFO[photo.shotType].label}
               </span>
@@ -102,27 +122,38 @@ export default function ReviewScreen({ photo, cosplayer, location, onContinue, o
             <div className="space-y-2 max-h-48 overflow-y-auto">
               {photo.feedback.map((note, i) => (
                 <div key={i} className="text-sm text-gray-300 flex items-start gap-2">
-                  <span className="mt-0.5">{note.substring(0, 2)}</span>
+                  <span className="mt-0.5 flex-shrink-0">{note.substring(0, 2)}</span>
                   <span>{note.substring(2).trim()}</span>
                 </div>
               ))}
+            </div>
+            <div className="mt-3 pt-3 border-t border-gray-800">
+              <div className="text-xs text-gray-500">
+                Earned: <span className="text-green-400">${photo.moneyEarned}</span> • <span className="text-purple-400">{photo.xpEarned} XP</span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Actions */}
-        <div className="flex gap-3 justify-center">
+        <div className="flex gap-3 justify-center flex-wrap">
           <button
             onClick={onContinue}
             className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-bold hover:from-purple-500 hover:to-pink-500 transition shadow-lg shadow-purple-500/20"
           >
-            📸 Shoot Another
+            📸 Shoot Again
           </button>
           <button
             onClick={onLocation}
             className="px-6 py-3 bg-gray-800 border border-gray-700 rounded-lg font-bold hover:bg-gray-700 transition"
           >
             🗺️ Change Location
+          </button>
+          <button
+            onClick={onPortfolio}
+            className="px-6 py-3 bg-gray-800 border border-gray-700 rounded-lg font-bold hover:bg-gray-700 transition"
+          >
+            📁 Portfolio
           </button>
         </div>
       </div>

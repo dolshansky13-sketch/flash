@@ -13,11 +13,25 @@ export default function ShopScreen({ money, equipment, onBuy, onBack }: Props) {
     switch (itemId) {
       case 'flash': return equipment.flash;
       case 'reflector': return equipment.reflector;
+      case 'tripod': return equipment.tripod;
+      case 'color_filter': return equipment.colorFilter;
       case 'lens_50': return equipment.lens === '50mm f/1.4 Lens';
       case 'lens_85': return equipment.lens === '85mm f/1.2 Lens';
+      case 'lens_24': return equipment.lens === '24mm f/1.4 Lens';
       case 'body_upgrade': return equipment.body === 'Full Frame Body';
       default: return false;
     }
+  };
+
+  const itemIcons: Record<string, string> = {
+    flash: '💡',
+    reflector: '🪞',
+    tripod: '📐',
+    color_filter: '🎨',
+    lens_50: '🔍',
+    lens_85: '📷',
+    lens_24: '🌐',
+    body_upgrade: '📸',
   };
 
   return (
@@ -37,7 +51,7 @@ export default function ShopScreen({ money, equipment, onBuy, onBack }: Props) {
         {/* Current Equipment */}
         <div className="bg-gray-900 rounded-xl p-4 border border-gray-800 mb-8">
           <h2 className="text-sm font-bold text-gray-400 mb-3 uppercase tracking-wider">Current Equipment</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             <div className="bg-gray-800/50 rounded-lg p-3">
               <div className="text-xs text-gray-500">Camera Body</div>
               <div className="text-sm font-medium text-white mt-1">{equipment.body}</div>
@@ -53,6 +67,14 @@ export default function ShopScreen({ money, equipment, onBuy, onBack }: Props) {
             <div className="bg-gray-800/50 rounded-lg p-3">
               <div className="text-xs text-gray-500">Reflector</div>
               <div className="text-sm font-medium mt-1">{equipment.reflector ? '🪞 5-in-1' : '❌ None'}</div>
+            </div>
+            <div className="bg-gray-800/50 rounded-lg p-3">
+              <div className="text-xs text-gray-500">Tripod</div>
+              <div className="text-sm font-medium mt-1">{equipment.tripod ? '📐 Carbon Fiber' : '❌ None'}</div>
+            </div>
+            <div className="bg-gray-800/50 rounded-lg p-3">
+              <div className="text-xs text-gray-500">Color Filters</div>
+              <div className="text-sm font-medium mt-1">{equipment.colorFilter ? '🎨 Gel Kit' : '❌ None'}</div>
             </div>
           </div>
         </div>
@@ -72,11 +94,14 @@ export default function ShopScreen({ money, equipment, onBuy, onBack }: Props) {
                 }`}
               >
                 <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="font-bold text-white">{item.name}</h3>
-                    <p className="text-sm text-gray-400 mt-1">{item.description}</p>
+                  <div className="flex items-start gap-3">
+                    <span className="text-2xl">{itemIcons[item.id] || '📦'}</span>
+                    <div>
+                      <h3 className="font-bold text-white">{item.name}</h3>
+                      <p className="text-sm text-gray-400 mt-1">{item.description}</p>
+                    </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-right flex-shrink-0 ml-2">
                     <div className="text-lg font-bold text-yellow-400">${item.price}</div>
                   </div>
                 </div>
@@ -107,12 +132,14 @@ export default function ShopScreen({ money, equipment, onBuy, onBack }: Props) {
         <div className="mt-8 bg-purple-500/10 border border-purple-500/30 rounded-xl p-4">
           <h3 className="text-sm font-bold text-purple-400 mb-2">💡 Photography Tips</h3>
           <ul className="text-sm text-gray-400 space-y-1">
-            <li>• Match poses to cosplayer preferences for higher scores</li>
-            <li>• Use wider apertures (lower f-numbers) in dark venues</li>
-            <li>• 85mm+ is ideal for portraits, 24-50mm for full body</li>
+            <li>• Match poses to cosplayer preferences (marked with ★) for higher scores</li>
+            <li>• Use wider apertures (f/1.4-f/2.8) in dark venues for proper exposure</li>
+            <li>• 85mm+ is ideal for portraits, 24-35mm for full body and wide shots</li>
             <li>• Keep shutter speed above 1/125 to avoid motion blur</li>
-            <li>• Different locations have different lighting qualities</li>
-            <li>• Build reputation to unlock new areas and cosplayers</li>
+            <li>• Different locations have different lighting - adapt your ISO accordingly</li>
+            <li>• Build reputation to unlock new areas with elite and legendary cosplayers</li>
+            <li>• Each cosplayer has specific shot types and poses they prefer</li>
+            <li>• Check the "Info" tab in camera mode for character-specific tips</li>
           </ul>
         </div>
       </div>

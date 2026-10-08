@@ -60,7 +60,6 @@ function calculateExposure(settings: CameraSettings, location: Location, hasFlas
   let score = 15; // base
   const feedback: string[] = [];
 
-  // In dark club settings, need higher ISO or wider aperture
   const isDark = location.lightingQuality <= 3;
   const isMedium = location.lightingQuality === 4;
 
@@ -95,7 +94,6 @@ function calculateExposure(settings: CameraSettings, location: Location, hasFlas
       feedback.push('⚠️ High ISO introducing noise unnecessarily');
     }
   } else {
-    // Good lighting
     if (settings.iso <= 400) {
       score += 10;
       feedback.push('✅ Clean image with low ISO in great lighting');
@@ -105,7 +103,7 @@ function calculateExposure(settings: CameraSettings, location: Location, hasFlas
     }
   }
 
-  // Shutter speed check - need fast enough for moving subjects
+  // Shutter speed check
   if (settings.shutterSpeed >= 1/125) {
     score = Math.min(25, score + 3);
     feedback.push('✅ Fast enough shutter to freeze motion');
@@ -142,10 +140,14 @@ function calculateComposition(composition: CompositionType, shotType: ShotType, 
 
   // Certain compositions work better with certain shots
   const goodCompositions: Record<ShotType, CompositionType[]> = {
-    closeup: ['rule_of_thirds', 'centered'],
-    medium: ['rule_of_thirds', 'frame_within_frame', 'leading_lines'],
-    fullbody: ['centered', 'leading_lines', 'low_angle'],
-    detail: ['rule_of_thirds', 'frame_within_frame'],
+    extreme_closeup: ['rule_of_thirds', 'centered'],
+    closeup: ['rule_of_thirds', 'centered', 'profile'],
+    bust: ['rule_of_thirds', 'centered', 'profile'],
+    medium: ['rule_of_thirds', 'frame_within_frame', 'leading_lines', 'dutch_angle'],
+    cowboy: ['rule_of_thirds', 'centered', 'leading_lines', 'low_angle'],
+    fullbody: ['centered', 'leading_lines', 'low_angle', 'overhead'],
+    wide: ['leading_lines', 'frame_within_frame', 'rule_of_thirds', 'overhead'],
+    detail: ['rule_of_thirds', 'frame_within_frame', 'centered'],
   };
 
   if (goodCompositions[shotType].includes(composition)) {
@@ -165,9 +167,21 @@ function calculateComposition(composition: CompositionType, shotType: ShotType, 
     score += 3;
     feedback.push('🌟 Velvet curtains frame the subject beautifully');
   }
-  if (composition === 'low_angle' && shotType === 'fullbody') {
+  if (composition === 'low_angle' && (shotType === 'fullbody' || shotType === 'cowboy')) {
     score += 3;
     feedback.push('🌟 Low angle makes the costume look epic and powerful');
+  }
+  if (composition === 'reflection' && location.id === 'neon_hallway') {
+    score += 4;
+    feedback.push('🌟 Reflective floor creates stunning mirror effect!');
+  }
+  if (composition === 'dutch_angle' && shotType === 'medium') {
+    score += 2;
+    feedback.push('🌟 Dutch angle adds dynamic editorial energy');
+  }
+  if (composition === 'profile' && (shotType === 'closeup' || shotType === 'bust')) {
+    score += 3;
+    feedback.push('🌟 Profile view highlights facial features and silhouette');
   }
 
   return { score: Math.min(20, score), feedback };
@@ -177,9 +191,13 @@ function calculateLensChoice(focalLength: number, shotType: ShotType) {
   const feedback: string[] = [];
 
   const idealRanges: Record<ShotType, [number, number]> = {
+    extreme_closeup: [85, 200],
     closeup: [85, 135],
-    medium: [50, 105],
+    bust: [50, 105],
+    medium: [50, 85],
+    cowboy: [35, 85],
     fullbody: [24, 50],
+    wide: [24, 35],
     detail: [85, 200],
   };
 
@@ -188,7 +206,7 @@ function calculateLensChoice(focalLength: number, shotType: ShotType) {
   if (focalLength >= min && focalLength <= max) {
     feedback.push(`✅ ${focalLength}mm is perfect for ${shotType} shots`);
     return { score: 15, feedback };
-  } else if (Math.abs(focalLength - (min + max) / 2) < 50) {
+  } else if (Math.abs(focalLength - (min + max) / 2) < 60) {
     feedback.push(`👍 ${focalLength}mm works but isn't ideal for ${shotType}`);
     return { score: 10, feedback };
   } else {
@@ -197,12 +215,12 @@ function calculateLensChoice(focalLength: number, shotType: ShotType) {
   }
 }
 
-function calculateDOF(aperture: number, shotType: ShotType, location: Location) {
+function calculateDOF(aperture: number, shotType: ShotType, _location: Location) {
   const feedback: string[] = [];
 
   // For portraits/closeups, wide aperture (low f-number) is good for bokeh
   // For full body/detail, might want more depth of field
-  if (shotType === 'closeup' || shotType === 'detail') {
+  if (shotType === 'extreme_closeup' || shotType === 'closeup' || shotType === 'detail') {
     if (aperture <= 2.8) {
       feedback.push('✅ Beautiful bokeh separates subject from busy background');
       return { score: 10, feedback };
@@ -213,7 +231,7 @@ function calculateDOF(aperture: number, shotType: ShotType, location: Location) 
       feedback.push('⚠️ Too much depth of field - background is distracting');
       return { score: 3, feedback };
     }
-  } else if (shotType === 'fullbody') {
+  } else if (shotType === 'fullbody' || shotType === 'wide') {
     if (aperture >= 4 && aperture <= 8) {
       feedback.push('✅ Good depth of field keeps entire costume sharp');
       return { score: 10, feedback };
@@ -225,7 +243,7 @@ function calculateDOF(aperture: number, shotType: ShotType, location: Location) 
       return { score: 6, feedback };
     }
   } else {
-    // medium
+    // medium, bust, cowboy
     if (aperture <= 4) {
       feedback.push('✅ Nice bokeh while keeping subject sharp');
       return { score: 10, feedback };
@@ -244,7 +262,6 @@ function calculateSynergy(location: Location, cosplayer: Cosplayer) {
     return { score: 10, feedback };
   }
 
-  // Partial matches
   const neonTypes = ['neon_pulsing', 'neon_linear'];
   const warmTypes = ['warm_golden'];
 
@@ -270,6 +287,7 @@ export function getStars(score: number): number {
 }
 
 export function getScoreLabel(score: number): string {
+  if (score >= 95) return 'LEGENDARY';
   if (score >= 90) return 'MASTERPIECE';
   if (score >= 75) return 'Excellent';
   if (score >= 60) return 'Great Shot';

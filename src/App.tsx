@@ -34,9 +34,13 @@ const initialState: GameState = {
     body: 'APS-C Mirrorless',
     flash: false,
     reflector: false,
+    tripod: false,
+    colorFilter: false,
   },
   photosTaken: 0,
   bestScore: 0,
+  achievements: [],
+  totalMoneyEarned: 0,
 };
 
 export default function App() {
@@ -107,6 +111,8 @@ export default function App() {
       stars,
       timestamp: Date.now(),
       feedback,
+      moneyEarned: money,
+      xpEarned: xp,
     };
 
     let newXp = game.xp + xp;
@@ -142,6 +148,7 @@ export default function App() {
       xpToNext: Math.round(newXpToNext),
       photosTaken: prev.photosTaken + 1,
       bestScore: Math.max(prev.bestScore, score),
+      totalMoneyEarned: prev.totalMoneyEarned + money,
     }));
   }, [game, locations]);
 
@@ -153,6 +160,8 @@ export default function App() {
       const newEquipment = { ...prev.equipment };
       if (item.type === 'flash') newEquipment.flash = true;
       if (item.type === 'reflector') newEquipment.reflector = true;
+      if (item.type === 'tripod') newEquipment.tripod = true;
+      if (item.type === 'colorFilter') newEquipment.colorFilter = true;
       if (item.type === 'lens') newEquipment.lens = item.name;
       if (item.type === 'body') newEquipment.body = item.name;
 
@@ -232,6 +241,7 @@ export default function App() {
           level={game.level}
           bestScore={game.bestScore}
           photosTaken={game.photosTaken}
+          totalMoneyEarned={game.totalMoneyEarned}
           onBack={() => goToScreen('location')}
         />
       );
