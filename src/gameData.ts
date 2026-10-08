@@ -118,6 +118,10 @@ export const COSPLAYERS: Cosplayer[] = [
       fabric: 'Faux leather, mesh panels, reflective PVC accents',
     },
     image: 'https://image.qwenlm.ai/generated-images/5e2b98e6-f5a0-45ee-aa0a-9d4ab3ed193f/_result.png',
+    poseImages: {
+      confident: 'https://image.qwenlm.ai/generated-images/d81c739e-25a3-41a7-b066-9d3af73360c1/_result.png',
+      over_shoulder: 'https://image.qwenlm.ai/generated-images/9564fb7f-3fb7-4d2f-8773-0d9adede3ef3/_result.png',
+    },
     personality: 'Bold and commanding, loves dramatic lighting and power poses',
     preferredPoses: ['confident', 'dramatic', 'action', 'kneeling'],
     preferredShots: ['fullbody', 'cowboy', 'medium'],
@@ -172,6 +176,9 @@ export const COSPLAYERS: Cosplayer[] = [
       fabric: 'Satin, patent leather, fishnet mesh',
     },
     image: 'https://image.qwenlm.ai/generated-images/2802b343-c0c0-403b-8c6c-e6868d26df82/_result.png',
+    poseImages: {
+      seductive: 'https://image.qwenlm.ai/generated-images/77ba80f3-59a3-4737-a2f3-5f0728131155/_result.png',
+    },
     personality: 'Confident and glamorous, knows her angles, magazine-cover energy',
     preferredPoses: ['seductive', 'over_shoulder', 'confident', 'lip_bite', 'sitting'],
     preferredShots: ['fullbody', 'cowboy', 'bust'],
@@ -579,6 +586,9 @@ export const COSPLAYERS: Cosplayer[] = [
       fabric: 'Cotton blouse, polyester skirt, knit socks',
     },
     image: 'https://image.qwenlm.ai/generated-images/587656f9-1a16-4f9f-814d-47f487b1efd9/_result.png',
+    poseImages: {
+      shy: 'https://image.qwenlm.ai/generated-images/ea03bafd-ee75-40ee-8fff-80c6ae69bd64/_result.png',
+    },
     personality: 'Sweet and innocent energy, shy smiles, peace signs, youthful charm',
     preferredPoses: ['peace_sign', 'playful', 'head_tilt', 'candid', 'heart_hands', 'shy'],
     preferredShots: ['fullbody', 'medium', 'cowboy'],
@@ -606,6 +616,9 @@ export const COSPLAYERS: Cosplayer[] = [
       fabric: 'Cotton blouse, polyester-blend skirt, nylon hosiery',
     },
     image: 'https://image.qwenlm.ai/generated-images/a558da13-414b-4689-9ab6-930a475b3c99/_result.png',
+    poseImages: {
+      leaning: 'https://image.qwenlm.ai/generated-images/904c8ff8-572d-4c7c-9939-43e2ced6d5c2/_result.png',
+    },
     personality: 'Professional with a hidden playful side, adjusts glasses when nervous, secretarial charm',
     preferredPoses: ['confident', 'leaning', 'over_shoulder', 'seductive', 'candid', 'finger_on_lips'],
     preferredShots: ['cowboy', 'medium', 'bust'],
@@ -633,6 +646,9 @@ export const COSPLAYERS: Cosplayer[] = [
       fabric: 'Satin, cotton lace, tulle petticoat',
     },
     image: 'https://image.qwenlm.ai/generated-images/17cb6bc8-f7ca-4a2f-af5c-f5aebbf25844/_result.png',
+    poseImages: {
+      kneeling: 'https://image.qwenlm.ai/generated-images/34de05d6-c6c3-4a3f-8108-f3c8bf45adec/_result.png',
+    },
     personality: 'Sweet and service-oriented, playful curtsy poses, shy smiles, eager to please',
     preferredPoses: ['playful', 'curtsy', 'kneeling', 'head_tilt', 'peace_sign', 'shy'],
     preferredShots: ['fullbody', 'medium', 'cowboy'],

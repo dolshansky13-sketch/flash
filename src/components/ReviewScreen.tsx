@@ -1,4 +1,4 @@
-import { Photo, Cosplayer, Location, SHOT_TYPE_INFO, POSE_INFO, COMPOSITION_INFO } from '../types';
+import { Photo, Cosplayer, Location, SHOT_TYPE_INFO, POSE_INFO, COMPOSITION_INFO, getCosplayerImage } from '../types';
 import { getScoreLabel } from '../scoring';
 
 interface Props {
@@ -43,8 +43,8 @@ export default function ReviewScreen({ photo, cosplayer, location, onContinue, o
               className="absolute inset-0 w-full h-full object-cover opacity-30" 
             />
             <img
-              src={cosplayer.image}
-              alt={cosplayer.name}
+              src={getCosplayerImage(cosplayer, photo.pose)}
+              alt={`${cosplayer.name} - ${POSE_INFO[photo.pose].label}`}
               className="relative max-w-full max-h-full object-contain z-10"
               style={{ filter: `brightness(${photo.settings.iso >= 800 ? 1 : 0.7}) contrast(1.1)` }}
             />

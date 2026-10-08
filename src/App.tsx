@@ -39,7 +39,6 @@ const initialState: GameState = {
   },
   photosTaken: 0,
   bestScore: 0,
-  achievements: [],
   totalMoneyEarned: 0,
 };
 

@@ -1,4 +1,4 @@
-import { Photo, Cosplayer, Location, SHOT_TYPE_INFO, POSE_INFO } from '../types';
+import { Photo, Cosplayer, Location, SHOT_TYPE_INFO, POSE_INFO, getCosplayerImage } from '../types';
 
 interface Props {
   portfolio: Photo[];
@@ -21,7 +21,11 @@ export default function PortfolioScreen({ portfolio, cosplayers, reputation, lev
   const avgScore = portfolio.length > 0 ? Math.round(portfolio.reduce((sum, p) => sum + p.score, 0) / portfolio.length) : 0;
   const uniqueCostumes = new Set(portfolio.map(p => p.cosplayerId)).size;
 
-  const getCosplayerImage = (id: string) => cosplayers.find(c => c.id === id)?.image || '';
+  const getImg = (id: string, pose?: any) => {
+    const cosplayer = cosplayers.find(c => c.id === id);
+    if (!cosplayer) return '';
+    return getCosplayerImage(cosplayer, pose);
+  };
   const getCosplayerTier = (id: string) => cosplayers.find(c => c.id === id)?.tier || 'common';
 
   const tierColors = {
@@ -89,7 +93,7 @@ export default function PortfolioScreen({ portfolio, cosplayers, reputation, lev
                 {/* Thumbnail */}
                 <div className="aspect-[3/4] relative overflow-hidden bg-black flex items-center justify-center">
                   <img
-                    src={getCosplayerImage(photo.cosplayerId)}
+                    src={getImg(photo.cosplayerId, photo.pose)}
                     alt={photo.cosplayerName}
                     className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     style={{ filter: `brightness(${photo.settings.iso >= 800 ? 1 : 0.7}) contrast(1.1)` }}
