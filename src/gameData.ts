@@ -149,6 +149,9 @@ export const COSPLAYERS: Cosplayer[] = [
       fabric: 'Satin, tulle, organza, lace trim',
     },
     image: 'https://image.qwenlm.ai/generated-images/c000ca88-39dc-420b-bd9c-e3e717c44ae5/_result.png',
+    poseImages: {
+      playful: 'https://image.qwenlm.ai/generated-images/f0f5c04b-502d-4fe7-b8cd-f9750d54b52d/_result.png',
+    },
     personality: 'Bubbly and energetic, always ready to strike a cute pose, loves peace signs',
     preferredPoses: ['playful', 'peace_sign', 'heart_hands', 'action', 'head_tilt'],
     preferredShots: ['closeup', 'bust', 'fullbody'],
@@ -206,6 +209,9 @@ export const COSPLAYERS: Cosplayer[] = [
       fabric: 'Silk, cotton, brocade trim',
     },
     image: 'https://image.qwenlm.ai/generated-images/22d7f138-1636-4cb3-b127-cc52c09d7158/_result.png',
+    poseImages: {
+      sitting: 'https://image.qwenlm.ai/generated-images/5a41fd66-4c62-4b44-988c-444aba991761/_result.png',
+    },
     personality: 'Graceful and serene, moves deliberately, elegant in every gesture',
     preferredPoses: ['dramatic', 'candid', 'sitting', 'head_tilt', 'kneeling'],
     preferredShots: ['fullbody', 'wide', 'medium'],
@@ -234,6 +240,9 @@ export const COSPLAYERS: Cosplayer[] = [
       fabric: 'Leather, satin, tulle, lace, velvet',
     },
     image: 'https://image.qwenlm.ai/generated-images/b096edf5-9f07-4537-844f-c5c35700db23/_result.png',
+    poseImages: {
+      dramatic: 'https://image.qwenlm.ai/generated-images/d985ec79-ef85-43bf-b9d0-e51fab107144/_result.png',
+    },
     personality: 'Mysterious and alluring, prefers moody low-light shots, intense eye contact',
     preferredPoses: ['seductive', 'dramatic', 'over_shoulder', 'lip_bite', 'back_pose'],
     preferredShots: ['bust', 'medium', 'cowboy'],
@@ -343,6 +352,9 @@ export const COSPLAYERS: Cosplayer[] = [
       fabric: 'Structured scuba knit, metallic foil accents, mesh panels',
     },
     image: 'https://image.qwenlm.ai/generated-images/cae3365f-21cd-442b-8552-427341de5982/_result.png',
+    poseImages: {
+      action: 'https://image.qwenlm.ai/generated-images/8e90f0ce-9fee-47ec-b848-9f91d4e8cf94/_result.png',
+    },
     personality: 'Professional and precise, loves clean compositions and symmetry',
     preferredPoses: ['confident', 'dramatic', 'action', 'hands_in_hair'],
     preferredShots: ['fullbody', 'medium', 'bust'],

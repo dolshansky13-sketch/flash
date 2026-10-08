@@ -26,7 +26,7 @@ export default function CameraScreen({
   cosplayer, location, settings, shotType, pose, composition, equipment,
   onUpdateSettings, onSetShotType, onSetPose, onSetComposition, onTakePhoto, onBack
 }: Props) {
-  const [activeTab, setActiveTab] = useState<'exposure' | 'shot' | 'pose' | 'compose' | 'info'>('pose');
+  const [activeTab, setActiveTab] = useState<'pose' | 'shot' | 'compose' | 'exposure' | 'info'>('pose');
   const [shutterAnim, setShutterAnim] = useState(false);
 
   const handleShutter = () => {
@@ -47,19 +47,10 @@ export default function CameraScreen({
       if (e.key === 'Escape') {
         onBack();
       }
-      // Number keys for quick pose selection
-      const poseKeys = Object.keys(POSE_INFO) as PoseType[];
-      const num = parseInt(e.key);
-      if (num >= 1 && num <= 9 && activeTab === 'pose') {
-        const idx = num - 1;
-        if (idx < poseKeys.length) {
-          onSetPose(poseKeys[idx]);
-        }
-      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeTab, onSetPose, onBack]);
+  }, [onBack]);
 
   const isDark = location.lightingQuality <= 3;
   const idealISO = isDark ? 1600 : location.lightingQuality === 4 ? 800 : 400;
@@ -77,16 +68,16 @@ export default function CameraScreen({
   const rotation = compInfo.rotate || 0;
 
   return (
-    <div className="h-screen bg-black text-white flex flex-col overflow-hidden">
+    <div className="h-screen bg-black text-white flex flex-col">
       {/* Shutter animation overlay */}
       {shutterAnim && (
         <div className="fixed inset-0 z-50 bg-white pointer-events-none" 
           style={{ animation: 'flash 0.3s ease-out' }} />
       )}
 
-      {/* Top Bar */}
+      {/* Top Bar - Fixed height */}
       <div className="bg-gray-900 border-b border-gray-800 px-3 py-2 flex items-center justify-between flex-shrink-0">
-        <button onClick={onBack} className="text-gray-400 hover:text-white text-sm flex items-center gap-1">
+        <button onClick={onBack} className="text-gray-400 hover:text-white text-sm">
           ← Back
         </button>
         <div className="flex items-center gap-2 text-xs">
@@ -97,17 +88,15 @@ export default function CameraScreen({
             'bg-gray-500/20 text-gray-400'
           }`}>{cosplayer.tier.toUpperCase()}</span>
           <span className="text-pink-400 font-medium">{cosplayer.name}</span>
-          <span className="text-gray-600 hidden sm:inline">•</span>
-          <span className="text-gray-400 hidden sm:inline text-xs">{cosplayer.costume}</span>
         </div>
         <div className={`flex items-center gap-1 text-xs ${exposureOk ? 'text-green-400' : 'text-yellow-400'}`}>
           <div className={`w-2 h-2 rounded-full ${exposureOk ? 'bg-green-400' : 'bg-yellow-400 animate-pulse'}`} />
         </div>
       </div>
 
-      {/* Viewfinder Area */}
-      <div className="flex-1 flex items-center justify-center p-2 bg-gray-950 min-h-0">
-        <div className="relative w-full max-w-md aspect-[3/4] rounded-lg overflow-hidden border-2 border-gray-700 shadow-2xl bg-black">
+      {/* Viewfinder Area - Fixed height to prevent overflow */}
+      <div className="flex-shrink-0 h-[45vh] flex items-center justify-center p-2 bg-gray-950">
+        <div className="relative w-full max-w-sm h-full rounded-lg overflow-hidden border-2 border-gray-700 shadow-2xl bg-black">
           {/* Background */}
           <img 
             src={location.image} 
@@ -115,7 +104,7 @@ export default function CameraScreen({
             className="absolute inset-0 w-full h-full object-cover opacity-30" 
           />
           
-          {/* Subject - THIS IS THE KEY: actually changes based on pose */}
+          {/* Subject - Changes based on pose */}
           <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
             <img
               key={`${cosplayer.id}-${pose}`}
@@ -142,24 +131,15 @@ export default function CameraScreen({
             {composition === 'centered' && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-24 h-24 border border-white/20 rounded-full" />
-                <div className="absolute w-1.5 h-1.5 bg-white/40 rounded-full" />
               </div>
             )}
             {composition === 'frame_within_frame' && (
               <div className="absolute inset-4 border-2 border-white/15 rounded-lg" />
             )}
-            {composition === 'leading_lines' && (
-              <>
-                <div className="absolute top-0 left-1/3 w-px h-full bg-white/10" />
-                <div className="absolute top-0 left-2/3 w-px h-full bg-white/10" />
-              </>
-            )}
 
             {/* Focus point */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-              <div className="w-8 h-8 border border-green-400/60 rounded-sm flex items-center justify-center">
-                <div className="w-1 h-1 bg-green-400 rounded-full" />
-              </div>
+              <div className="w-8 h-8 border border-green-400/60 rounded-sm" />
             </div>
 
             {/* Corner brackets */}
@@ -185,10 +165,10 @@ export default function CameraScreen({
         </div>
       </div>
 
-      {/* Controls Panel */}
-      <div className="bg-gray-900 border-t border-gray-800 flex-shrink-0">
+      {/* Controls Panel - Takes remaining space */}
+      <div className="flex-1 bg-gray-900 border-t border-gray-800 flex flex-col min-h-0">
         {/* Tab Navigation */}
-        <div className="flex border-b border-gray-800">
+        <div className="flex border-b border-gray-800 flex-shrink-0">
           {[
             { id: 'pose' as const, label: '💃 Pose' },
             { id: 'shot' as const, label: '🎯 Shot' },
@@ -199,7 +179,7 @@ export default function CameraScreen({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-2.5 text-xs font-medium transition ${
+              className={`flex-1 py-2 text-xs font-medium transition ${
                 activeTab === tab.id
                   ? 'text-purple-400 border-b-2 border-purple-400 bg-purple-500/10'
                   : 'text-gray-500 hover:text-gray-300'
@@ -210,11 +190,11 @@ export default function CameraScreen({
           ))}
         </div>
 
-        {/* Tab Content */}
-        <div className="p-3 h-36 overflow-y-auto">
+        {/* Tab Content - Scrollable */}
+        <div className="flex-1 overflow-y-auto p-3">
           {activeTab === 'pose' && (
             <div className="grid grid-cols-4 sm:grid-cols-6 gap-1.5">
-              {(Object.entries(POSE_INFO) as [PoseType, typeof POSE_INFO[PoseType]][]).map(([key, info], idx) => {
+              {(Object.entries(POSE_INFO) as [PoseType, typeof POSE_INFO[PoseType]][]).map(([key, info]) => {
                 const isPreferred = cosplayer.preferredPoses.includes(key);
                 const hasImage = cosplayer.poseImages && cosplayer.poseImages[key];
                 return (
@@ -353,18 +333,15 @@ export default function CameraScreen({
           )}
         </div>
 
-        {/* Shutter Button */}
-        <div className="flex items-center justify-center pb-3 pt-1 border-t border-gray-800">
+        {/* Shutter Button - Fixed at bottom */}
+        <div className="flex-shrink-0 flex items-center justify-center pb-3 pt-2 border-t border-gray-800">
           <button
             onClick={handleShutter}
-            className="w-14 h-14 rounded-full bg-gradient-to-b from-gray-200 to-gray-400 border-4 border-gray-600 shadow-lg hover:from-white hover:to-gray-300 active:scale-90 transition-all flex items-center justify-center"
+            className="w-14 h-14 rounded-full bg-gradient-to-b from-gray-200 to-gray-400 border-4 border-gray-600 shadow-lg hover:from-white hover:to-gray-300 active:scale-90 transition-all"
             title="Take Photo (Space/Enter)"
-          >
-            <div className="w-9 h-9 rounded-full border-2 border-gray-500 bg-gray-300" />
-          </button>
+          />
           <div className="ml-3 text-[10px] text-gray-500">
             <div className="text-gray-400">Space = Shoot • Esc = Back</div>
-            <div>{equipment.body} • {equipment.lens}</div>
           </div>
         </div>
       </div>
